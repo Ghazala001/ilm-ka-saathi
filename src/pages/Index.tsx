@@ -116,6 +116,7 @@ const Index = () => {
           image: imageBase64 ?? undefined,
           text: hasText ? questionText.trim() : undefined,
           subject,
+          language,
         },
       });
       if (error) throw error;
