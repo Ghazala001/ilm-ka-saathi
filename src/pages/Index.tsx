@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 type Subject = "Math" | "Science" | "English";
+type Language = "Urdu" | "English";
 
 const SUBJECTS: { id: Subject; label: string; urdu: string }[] = [
   { id: "Math", label: "Math", urdu: "ریاضی" },
@@ -16,6 +17,7 @@ const SUBJECTS: { id: Subject; label: string; urdu: string }[] = [
 
 const Index = () => {
   const [subject, setSubject] = useState<Subject>("Math");
+  const [language, setLanguage] = useState<Language>("Urdu");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [questionText, setQuestionText] = useState<string>("");
@@ -114,6 +116,7 @@ const Index = () => {
           image: imageBase64 ?? undefined,
           text: hasText ? questionText.trim() : undefined,
           subject,
+          language,
         },
       });
       if (error) throw error;
@@ -177,6 +180,34 @@ const Index = () => {
                 <div className={`text-xs mt-0.5 urdu ${subject === s.id ? "opacity-90" : "text-muted-foreground"}`}>
                   {s.urdu}
                 </div>
+              </button>
+            ))}
+          </div>
+
+          <label className="text-sm font-semibold mb-3 block">Answer language</label>
+          <div className="grid grid-cols-2 gap-2 mb-6">
+            {(["Urdu", "English"] as Language[]).map((l) => (
+              <button
+                key={l}
+                type="button"
+                onClick={() => setLanguage(l)}
+                className={`rounded-xl border px-3 py-3 text-sm font-medium transition-all ${
+                  language === l
+                    ? "bg-gradient-to-br from-primary to-primary-glow text-primary-foreground border-transparent shadow-[var(--shadow-elegant)]"
+                    : "bg-background hover:bg-accent border-border"
+                }`}
+              >
+                {l === "Urdu" ? (
+                  <>
+                    <div className="urdu text-base">اردو</div>
+                    <div className={`text-xs mt-0.5 ${language === l ? "opacity-90" : "text-muted-foreground"}`}>Urdu</div>
+                  </>
+                ) : (
+                  <>
+                    <div>English</div>
+                    <div className={`text-xs mt-0.5 ${language === l ? "opacity-90" : "text-muted-foreground"}`}>انگریزی</div>
+                  </>
+                )}
               </button>
             ))}
           </div>
@@ -270,7 +301,7 @@ const Index = () => {
               </>
             ) : (
               <>
-                <Sparkles className="h-4 w-4 mr-2" /> Solve in Urdu
+                <Sparkles className="h-4 w-4 mr-2" /> {language === "Urdu" ? "Solve in Urdu" : "Solve in English"}
               </>
             )}
           </Button>
@@ -287,7 +318,7 @@ const Index = () => {
               <p className="text-sm">Reading your question and preparing the answer...</p>
             </div>
           ) : solution ? (
-            <div className="urdu text-xl sm:text-2xl text-foreground whitespace-pre-wrap break-words">
+            <div className={`text-xl sm:text-2xl text-foreground whitespace-pre-wrap break-words ${language === "Urdu" ? "urdu" : ""}`}>
               {solution}
             </div>
           ) : (

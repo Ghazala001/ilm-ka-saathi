@@ -9,7 +9,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { image, text, subject } = await req.json();
+    const { image, text, subject, language } = await req.json();
     if ((!image && !text) || !subject) {
       return new Response(JSON.stringify({ error: "image or text, and subject are required" }), {
         status: 400,
@@ -20,7 +20,10 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    const systemPrompt = `You are an expert homework tutor for students. The user will provide a homework question (as a photo, typed text, or both) in the subject: ${subject}.
+    const lang = language === "English" ? "English" : "Urdu";
+
+    const systemPrompt = lang === "Urdu"
+      ? `You are an expert homework tutor for students. The user will provide a homework question (as a photo, typed text, or both) in the subject: ${subject}.
 
 Your task:
 1. If an image is provided, carefully read and extract the question (OCR). If text is also provided, treat it as additional context or the question itself.
@@ -30,12 +33,22 @@ Your task:
    - **سوال:** (the question)
    - **حل:** (step-by-step solution with numbered steps)
    - **جواب:** (final answer)
-5. Use simple, clear Urdu that a school student can understand.`;
+5. Use simple, clear Urdu that a school student can understand.`
+      : `You are an expert homework tutor for students. The user will provide a homework question (as a photo, typed text, or both) in the subject: ${subject}.
+
+Your task:
+1. If an image is provided, carefully read and extract the question (OCR). If text is also provided, treat it as additional context or the question itself.
+2. Solve the question step by step.
+3. Respond ENTIRELY IN ENGLISH using simple, clear language a school student can understand.
+4. Format your answer clearly using markdown:
+   - **Question:** (the question)
+   - **Solution:** (step-by-step solution with numbered steps)
+   - **Answer:** (final answer)`;
 
     const userContent: any[] = [];
-    const promptText = text
-      ? `براہ کرم اس ${subject} کے سوال کو حل کریں:\n\n${text}`
-      : `براہ کرم اس ${subject} کے سوال کو حل کریں۔`;
+    const promptText = lang === "Urdu"
+      ? (text ? `براہ کرم اس ${subject} کے سوال کو حل کریں:\n\n${text}` : `براہ کرم اس ${subject} کے سوال کو حل کریں۔`)
+      : (text ? `Please solve this ${subject} question:\n\n${text}` : `Please solve this ${subject} question.`);
     userContent.push({ type: "text", text: promptText });
     if (image) {
       userContent.push({ type: "image_url", image_url: { url: image } });
