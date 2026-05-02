@@ -301,7 +301,7 @@ const Index = () => {
               </>
             ) : (
               <>
-                <Sparkles className="h-4 w-4 mr-2" /> Solve in Urdu
+                <Sparkles className="h-4 w-4 mr-2" /> {language === "Urdu" ? "Solve in Urdu" : "Solve in English"}
               </>
             )}
           </Button>
