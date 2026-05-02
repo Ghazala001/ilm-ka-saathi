@@ -9,9 +9,9 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { image, subject } = await req.json();
-    if (!image || !subject) {
-      return new Response(JSON.stringify({ error: "image and subject are required" }), {
+    const { image, text, subject } = await req.json();
+    if ((!image && !text) || !subject) {
+      return new Response(JSON.stringify({ error: "image or text, and subject are required" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -20,17 +20,26 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    const systemPrompt = `You are an expert homework tutor for students. The user will upload a photo of a homework question in the subject: ${subject}.
+    const systemPrompt = `You are an expert homework tutor for students. The user will provide a homework question (as a photo, typed text, or both) in the subject: ${subject}.
 
 Your task:
-1. Carefully read and extract the question from the image (OCR).
+1. If an image is provided, carefully read and extract the question (OCR). If text is also provided, treat it as additional context or the question itself.
 2. Solve the question step by step.
 3. Respond ENTIRELY IN URDU (اردو). Do not use English except for mathematical symbols, numbers, formulas, or unavoidable technical terms.
 4. Format your answer clearly using markdown:
-   - **سوال:** (the extracted question)
+   - **سوال:** (the question)
    - **حل:** (step-by-step solution with numbered steps)
    - **جواب:** (final answer)
 5. Use simple, clear Urdu that a school student can understand.`;
+
+    const userContent: any[] = [];
+    const promptText = text
+      ? `براہ کرم اس ${subject} کے سوال کو حل کریں:\n\n${text}`
+      : `براہ کرم اس ${subject} کے سوال کو حل کریں۔`;
+    userContent.push({ type: "text", text: promptText });
+    if (image) {
+      userContent.push({ type: "image_url", image_url: { url: image } });
+    }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -42,13 +51,7 @@ Your task:
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
-          {
-            role: "user",
-            content: [
-              { type: "text", text: `براہ کرم اس ${subject} کے سوال کو حل کریں۔` },
-              { type: "image_url", image_url: { url: image } },
-            ],
-          },
+          { role: "user", content: userContent },
         ],
       }),
     });
