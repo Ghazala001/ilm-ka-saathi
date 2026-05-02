@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
-import { Upload, Loader2, BookOpen, Sparkles, ImageIcon, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Upload, Loader2, BookOpen, Sparkles, ImageIcon, X, Camera, Images, ClipboardPaste, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -17,9 +18,11 @@ const Index = () => {
   const [subject, setSubject] = useState<Subject>("Math");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [questionText, setQuestionText] = useState<string>("");
   const [solution, setSolution] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
+  const galleryRef = useRef<HTMLInputElement>(null);
 
   const handleFile = (file: File) => {
     if (!file.type.startsWith("image/")) {
@@ -44,19 +47,74 @@ const Index = () => {
     setImagePreview(null);
     setImageBase64(null);
     setSolution("");
-    if (fileRef.current) fileRef.current.value = "";
+    if (cameraRef.current) cameraRef.current.value = "";
+    if (galleryRef.current) galleryRef.current.value = "";
+  };
+
+  // Global paste support — paste image from clipboard anywhere on the page
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (const item of Array.from(items)) {
+        if (item.type.startsWith("image/")) {
+          const file = item.getAsFile();
+          if (file) {
+            handleFile(file);
+            toast.success("Image pasted from clipboard");
+            e.preventDefault();
+            return;
+          }
+        }
+      }
+    };
+    window.addEventListener("paste", onPaste);
+    return () => window.removeEventListener("paste", onPaste);
+  }, []);
+
+  const pasteFromClipboard = async () => {
+    try {
+      // Try image first
+      if (navigator.clipboard && "read" in navigator.clipboard) {
+        const items = await navigator.clipboard.read();
+        for (const item of items) {
+          const imgType = item.types.find((t) => t.startsWith("image/"));
+          if (imgType) {
+            const blob = await item.getType(imgType);
+            handleFile(new File([blob], "pasted.png", { type: imgType }));
+            toast.success("Image pasted");
+            return;
+          }
+        }
+      }
+      // Fallback: text
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        setQuestionText((prev) => (prev ? prev + "\n" + text : text));
+        toast.success("Text pasted");
+      } else {
+        toast.error("Clipboard is empty");
+      }
+    } catch {
+      toast.error("Couldn't access clipboard. Try Ctrl/Cmd + V instead.");
+    }
   };
 
   const solve = async () => {
-    if (!imageBase64) {
-      toast.error("Please upload a homework photo first");
+    const hasText = questionText.trim().length > 0;
+    if (!imageBase64 && !hasText) {
+      toast.error("Upload a photo or type/paste a question");
       return;
     }
     setLoading(true);
     setSolution("");
     try {
       const { data, error } = await supabase.functions.invoke("solve-homework", {
-        body: { image: imageBase64, subject },
+        body: {
+          image: imageBase64 ?? undefined,
+          text: hasText ? questionText.trim() : undefined,
+          subject,
+        },
       });
       if (error) throw error;
       if (data?.error) {
@@ -97,7 +155,7 @@ const Index = () => {
             Snap. Solve. <span className="text-primary">Learn.</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Upload a photo of any homework question and get a clear, step-by-step solution in Urdu.
+            Upload a photo, paste an image, or type a question — get a step-by-step solution in Urdu.
           </p>
         </section>
 
@@ -123,21 +181,39 @@ const Index = () => {
             ))}
           </div>
 
-          <label className="text-sm font-semibold mb-3 block">Upload homework photo</label>
-          {!imagePreview ? (
+          <label className="text-sm font-semibold mb-3 block">Add your question</label>
+
+          {/* Source buttons */}
+          <div className="grid grid-cols-3 gap-2 mb-3">
             <button
               type="button"
-              onClick={() => fileRef.current?.click()}
-              className="w-full border-2 border-dashed border-border rounded-2xl p-10 text-center hover:border-primary hover:bg-accent/40 transition-colors group"
+              onClick={() => cameraRef.current?.click()}
+              className="flex flex-col items-center justify-center gap-1 rounded-xl border border-border bg-background hover:bg-accent hover:border-primary/40 transition-colors py-3"
             >
-              <div className="mx-auto h-14 w-14 rounded-2xl bg-accent grid place-items-center mb-3 group-hover:scale-105 transition-transform">
-                <Upload className="h-6 w-6 text-primary" />
-              </div>
-              <p className="font-medium">Click to upload an image</p>
-              <p className="text-xs text-muted-foreground mt-1">PNG, JPG up to 8MB</p>
+              <Camera className="h-5 w-5 text-primary" />
+              <span className="text-xs font-medium">Camera</span>
             </button>
-          ) : (
-            <div className="relative rounded-2xl overflow-hidden border border-border bg-muted">
+            <button
+              type="button"
+              onClick={() => galleryRef.current?.click()}
+              className="flex flex-col items-center justify-center gap-1 rounded-xl border border-border bg-background hover:bg-accent hover:border-primary/40 transition-colors py-3"
+            >
+              <Images className="h-5 w-5 text-primary" />
+              <span className="text-xs font-medium">Gallery</span>
+            </button>
+            <button
+              type="button"
+              onClick={pasteFromClipboard}
+              className="flex flex-col items-center justify-center gap-1 rounded-xl border border-border bg-background hover:bg-accent hover:border-primary/40 transition-colors py-3"
+            >
+              <ClipboardPaste className="h-5 w-5 text-primary" />
+              <span className="text-xs font-medium">Paste</span>
+            </button>
+          </div>
+
+          {/* Image preview */}
+          {imagePreview ? (
+            <div className="relative rounded-2xl overflow-hidden border border-border bg-muted mb-4">
               <img src={imagePreview} alt="Homework question preview" className="w-full max-h-80 object-contain" />
               <button
                 type="button"
@@ -148,19 +224,44 @@ const Index = () => {
                 <X className="h-4 w-4" />
               </button>
             </div>
+          ) : (
+            <div className="rounded-xl border border-dashed border-border bg-muted/40 px-4 py-3 mb-4 text-xs text-muted-foreground flex items-center gap-2">
+              <Upload className="h-4 w-4" />
+              No image yet — use Camera, Gallery, or Paste (Ctrl/Cmd + V works too).
+            </div>
           )}
+
+          {/* Hidden file inputs: camera vs gallery */}
           <input
-            ref={fileRef}
+            ref={cameraRef}
             type="file"
             accept="image/*"
             capture="environment"
             className="hidden"
             onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
           />
+          <input
+            ref={galleryRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+          />
+
+          {/* Typed / pasted question */}
+          <label className="text-xs font-semibold mb-2 flex items-center gap-1.5 text-muted-foreground">
+            <Type className="h-3.5 w-3.5" /> Or type / paste your question
+          </label>
+          <Textarea
+            value={questionText}
+            onChange={(e) => setQuestionText(e.target.value)}
+            placeholder="Type or paste your homework question here..."
+            className="min-h-[110px] resize-y rounded-xl"
+          />
 
           <Button
             onClick={solve}
-            disabled={!imageBase64 || loading}
+            disabled={loading || (!imageBase64 && questionText.trim().length === 0)}
             className="w-full mt-5 h-12 text-base bg-gradient-to-r from-primary to-primary-glow hover:opacity-95 shadow-[var(--shadow-elegant)]"
           >
             {loading ? (
