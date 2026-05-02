@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 type Subject = "Math" | "Science" | "English";
+type Language = "Urdu" | "English";
 
 const SUBJECTS: { id: Subject; label: string; urdu: string }[] = [
   { id: "Math", label: "Math", urdu: "ریاضی" },
@@ -16,6 +17,7 @@ const SUBJECTS: { id: Subject; label: string; urdu: string }[] = [
 
 const Index = () => {
   const [subject, setSubject] = useState<Subject>("Math");
+  const [language, setLanguage] = useState<Language>("Urdu");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [questionText, setQuestionText] = useState<string>("");
