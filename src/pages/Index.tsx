@@ -184,6 +184,34 @@ const Index = () => {
             ))}
           </div>
 
+          <label className="text-sm font-semibold mb-3 block">Answer language</label>
+          <div className="grid grid-cols-2 gap-2 mb-6">
+            {(["Urdu", "English"] as Language[]).map((l) => (
+              <button
+                key={l}
+                type="button"
+                onClick={() => setLanguage(l)}
+                className={`rounded-xl border px-3 py-3 text-sm font-medium transition-all ${
+                  language === l
+                    ? "bg-gradient-to-br from-primary to-primary-glow text-primary-foreground border-transparent shadow-[var(--shadow-elegant)]"
+                    : "bg-background hover:bg-accent border-border"
+                }`}
+              >
+                {l === "Urdu" ? (
+                  <>
+                    <div className="urdu text-base">اردو</div>
+                    <div className={`text-xs mt-0.5 ${language === l ? "opacity-90" : "text-muted-foreground"}`}>Urdu</div>
+                  </>
+                ) : (
+                  <>
+                    <div>English</div>
+                    <div className={`text-xs mt-0.5 ${language === l ? "opacity-90" : "text-muted-foreground"}`}>انگریزی</div>
+                  </>
+                )}
+              </button>
+            ))}
+          </div>
+
           <label className="text-sm font-semibold mb-3 block">Add your question</label>
 
           {/* Source buttons */}
