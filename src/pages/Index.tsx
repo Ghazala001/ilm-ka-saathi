@@ -318,7 +318,7 @@ const Index = () => {
               <p className="text-sm">Reading your question and preparing the answer...</p>
             </div>
           ) : solution ? (
-            <div className="urdu text-xl sm:text-2xl text-foreground whitespace-pre-wrap break-words">
+            <div className={`text-xl sm:text-2xl text-foreground whitespace-pre-wrap break-words ${language === "Urdu" ? "urdu" : ""}`}>
               {solution}
             </div>
           ) : (
