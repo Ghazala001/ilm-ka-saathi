@@ -357,10 +357,153 @@ const Index = () => {
           )}
         </Card>
 
-        <p className="text-center text-xs text-muted-foreground pb-6">
-          Built for students • Powered by AI
-        </p>
+        {/* About */}
+        <section id="about" className="scroll-mt-20 pt-6">
+          <Card className="p-6 sm:p-8 shadow-[var(--shadow-card)] border-border/60">
+            <div className="flex items-center gap-2 mb-3">
+              <Info className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">About</h2>
+            </div>
+            <p className="text-foreground/80 leading-relaxed mb-4">
+              Homework Helper is a free AI-powered learning assistant built for students. It understands
+              questions from a photo, a screenshot, or plain text — and explains the answer step by step
+              in your preferred language.
+            </p>
+            <div className="grid sm:grid-cols-3 gap-3">
+              <div className="rounded-xl bg-accent/40 p-4">
+                <div className="font-semibold mb-1">5 Subjects</div>
+                <p className="text-sm text-muted-foreground">Math, Science, English, Urdu and General Knowledge.</p>
+              </div>
+              <div className="rounded-xl bg-accent/40 p-4">
+                <div className="font-semibold mb-1">Bilingual</div>
+                <p className="text-sm text-muted-foreground">Get clear explanations in Urdu or English.</p>
+              </div>
+              <div className="rounded-xl bg-accent/40 p-4">
+                <div className="font-semibold mb-1">No sign-up</div>
+                <p className="text-sm text-muted-foreground">Just open and start asking — privacy first.</p>
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* FAQ */}
+        <section id="faq" className="scroll-mt-20">
+          <Card className="p-6 sm:p-8 shadow-[var(--shadow-card)] border-border/60">
+            <div className="flex items-center gap-2 mb-4">
+              <HelpCircle className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
+            </div>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="q1">
+                <AccordionTrigger>Is Homework Helper free to use?</AccordionTrigger>
+                <AccordionContent>
+                  Yes. You can ask questions and get step-by-step solutions completely free, with no
+                  sign-up required.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q2">
+                <AccordionTrigger>Which subjects are supported?</AccordionTrigger>
+                <AccordionContent>
+                  Math, Science, English, Urdu and General Knowledge. The AI can also help with broader
+                  questions like history, grammar and vocabulary.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q3">
+                <AccordionTrigger>Can I get answers in Urdu?</AccordionTrigger>
+                <AccordionContent>
+                  Absolutely. Use the language toggle to switch between Urdu and English at any time.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q4">
+                <AccordionTrigger>How accurate are the answers?</AccordionTrigger>
+                <AccordionContent>
+                  The AI is highly accurate for most school-level questions, but always double-check
+                  important answers — it's a study aid, not a replacement for learning.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q5">
+                <AccordionTrigger>Are my questions stored?</AccordionTrigger>
+                <AccordionContent>
+                  Questions and images are processed in real time and not stored permanently. See our{" "}
+                  <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link> for details.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </Card>
+        </section>
+
+        {/* Contact */}
+        <section id="contact" className="scroll-mt-20">
+          <Card className="p-6 sm:p-8 shadow-[var(--shadow-card)] border-border/60">
+            <div className="flex items-center gap-2 mb-3">
+              <Mail className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">Contact us</h2>
+            </div>
+            <p className="text-muted-foreground mb-5">
+              Have feedback, a feature request, or a question? We'd love to hear from you.
+            </p>
+            <form onSubmit={submitContact} className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label htmlFor="c-name" className="text-sm font-medium">Name</label>
+                  <Input
+                    id="c-name"
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                    placeholder="Your name"
+                    maxLength={100}
+                    required
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label htmlFor="c-email" className="text-sm font-medium">Email</label>
+                  <Input
+                    id="c-email"
+                    type="email"
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    maxLength={255}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <label htmlFor="c-message" className="text-sm font-medium">Message</label>
+                <Textarea
+                  id="c-message"
+                  value={contactMessage}
+                  onChange={(e) => setContactMessage(e.target.value)}
+                  placeholder="How can we help?"
+                  className="min-h-[120px] rounded-xl"
+                  maxLength={1000}
+                  required
+                />
+                <p className="text-xs text-muted-foreground text-right">{contactMessage.length}/1000</p>
+              </div>
+              <Button
+                type="submit"
+                className="h-11 px-6 bg-gradient-to-r from-primary to-primary-glow hover:opacity-95 shadow-[var(--shadow-elegant)]"
+              >
+                <Send className="h-4 w-4 mr-2" /> Send message
+              </Button>
+            </form>
+          </Card>
+        </section>
       </main>
+
+      <footer className="border-t border-border/60 bg-background/60 mt-8">
+        <div className="container max-w-4xl py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
+          <p>© {new Date().getFullYear()} Homework Helper. Built for students.</p>
+          <nav className="flex items-center gap-5">
+            <a href="#home" className="hover:text-primary inline-flex items-center gap-1"><Home className="h-3.5 w-3.5" /> Home</a>
+            <a href="#about" className="hover:text-primary">About</a>
+            <a href="#faq" className="hover:text-primary">FAQ</a>
+            <a href="#contact" className="hover:text-primary">Contact</a>
+            <Link to="/privacy" className="hover:text-primary">Privacy</Link>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 };
