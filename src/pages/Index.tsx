@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Upload, Loader2, BookOpen, Sparkles, ImageIcon, X, Camera, Images, ClipboardPaste, Type, Mail, HelpCircle, Info, Home, Send } from "lucide-react";
+import { Upload, Loader2, BookOpen, Sparkles, ImageIcon, X, Camera, Images, ClipboardPaste, Type, Mail, HelpCircle, Info, Home, Send, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
