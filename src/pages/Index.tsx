@@ -6,13 +6,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-type Subject = "Math" | "Science" | "English";
+type Subject = "Math" | "Science" | "English" | "Urdu" | "General Knowledge";
 type Language = "Urdu" | "English";
 
 const SUBJECTS: { id: Subject; label: string; urdu: string }[] = [
   { id: "Math", label: "Math", urdu: "ریاضی" },
   { id: "Science", label: "Science", urdu: "سائنس" },
   { id: "English", label: "English", urdu: "انگریزی" },
+  { id: "Urdu", label: "Urdu", urdu: "اردو" },
+  { id: "General Knowledge", label: "General", urdu: "عمومی معلومات" },
 ];
 
 const Index = () => {
@@ -164,7 +166,7 @@ const Index = () => {
 
         <Card className="p-5 sm:p-6 shadow-[var(--shadow-card)] border-border/60">
           <label className="text-sm font-semibold mb-3 block">Choose subject</label>
-          <div className="grid grid-cols-3 gap-2 mb-6">
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-6">
             {SUBJECTS.map((s) => (
               <button
                 key={s.id}
