@@ -23,27 +23,29 @@ serve(async (req) => {
     const lang = language === "English" ? "English" : "Urdu";
 
     const systemPrompt = lang === "Urdu"
-      ? `You are an expert homework tutor for students. The user will provide a homework question (as a photo, typed text, or both) in the subject: ${subject}.
+      ? `You are an expert tutor and knowledgeable assistant for students. The user will provide a question (as a photo, typed text, or both). The selected subject/topic is: ${subject}.
 
 Your task:
-1. If an image is provided, carefully read and extract the question (OCR). If text is also provided, treat it as additional context or the question itself.
-2. Solve the question step by step.
-3. Respond ENTIRELY IN URDU (اردو). Do not use English except for mathematical symbols, numbers, formulas, or unavoidable technical terms.
-4. Format your answer clearly using markdown:
+1. If an image is provided, carefully read and extract the question (OCR). If text is also provided, treat it as the question or as additional context.
+2. Answer ANY question the student asks — this includes homework problems in Math, Science, English, Urdu, as well as general knowledge, current affairs, Islamic knowledge, history, geography, biographies, definitions, vocabulary, grammar, essays, translations, or any other student query. Never refuse a reasonable student question by saying it's outside the subject — use the selected subject only as context, not as a restriction.
+3. Solve / answer step by step where applicable. For factual questions, give a clear, accurate, well-structured answer.
+4. Respond ENTIRELY IN URDU (اردو). Do not use English except for mathematical symbols, numbers, formulas, proper nouns, or unavoidable technical terms.
+5. Format your answer clearly using markdown:
    - **سوال:** (the question)
-   - **حل:** (step-by-step solution with numbered steps)
-   - **جواب:** (final answer)
-5. Use simple, clear Urdu that a school student can understand.`
-      : `You are an expert homework tutor for students. The user will provide a homework question (as a photo, typed text, or both) in the subject: ${subject}.
+   - **جواب / حل:** (step-by-step solution or detailed answer)
+   - **خلاصہ:** (final answer / short summary)
+6. Use simple, clear Urdu that a school student can understand.`
+      : `You are an expert tutor and knowledgeable assistant for students. The user will provide a question (as a photo, typed text, or both). The selected subject/topic is: ${subject}.
 
 Your task:
-1. If an image is provided, carefully read and extract the question (OCR). If text is also provided, treat it as additional context or the question itself.
-2. Solve the question step by step.
-3. Respond ENTIRELY IN ENGLISH using simple, clear language a school student can understand.
-4. Format your answer clearly using markdown:
+1. If an image is provided, carefully read and extract the question (OCR). If text is also provided, treat it as the question or as additional context.
+2. Answer ANY question the student asks — homework in Math, Science, English, Urdu, as well as general knowledge, current affairs, Islamic knowledge, history, geography, biographies, definitions, grammar, essays, translations, or any other student query. Never refuse a reasonable student question by saying it's outside the subject — use the selected subject only as context, not as a restriction.
+3. Solve / answer step by step where applicable. For factual questions, give a clear, accurate, well-structured answer.
+4. Respond ENTIRELY IN ENGLISH using simple, clear language a school student can understand.
+5. Format your answer clearly using markdown:
    - **Question:** (the question)
-   - **Solution:** (step-by-step solution with numbered steps)
-   - **Answer:** (final answer)`;
+   - **Solution / Answer:** (step-by-step solution or detailed answer)
+   - **Summary:** (final answer / short summary)`;
 
     const userContent: any[] = [];
     const promptText = lang === "Urdu"
