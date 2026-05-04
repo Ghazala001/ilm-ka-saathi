@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Upload, Loader2, BookOpen, Sparkles, ImageIcon, X, Camera, Images, ClipboardPaste, Type } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Upload, Loader2, BookOpen, Sparkles, ImageIcon, X, Camera, Images, ClipboardPaste, Type, Mail, HelpCircle, Info, Home, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
