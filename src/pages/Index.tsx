@@ -28,8 +28,25 @@ const Index = () => {
   const [questionText, setQuestionText] = useState<string>("");
   const [solution, setSolution] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
   const cameraRef = useRef<HTMLInputElement>(null);
   const galleryRef = useRef<HTMLInputElement>(null);
+
+  const submitContact = (e: React.FormEvent) => {
+    e.preventDefault();
+    const name = contactName.trim();
+    const email = contactEmail.trim();
+    const message = contactMessage.trim();
+    if (!name || name.length > 100) return toast.error("Please enter your name (max 100 chars)");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 255) return toast.error("Please enter a valid email");
+    if (!message || message.length > 1000) return toast.error("Please enter a message (max 1000 chars)");
+    const subj = encodeURIComponent(`Homework Helper — message from ${name}`);
+    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+    window.location.href = `mailto:hello@example.com?subject=${subj}&body=${body}`;
+    toast.success("Opening your email app...");
+  };
 
   const handleFile = (file: File) => {
     if (!file.type.startsWith("image/")) {
@@ -141,8 +158,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/40">
       <header className="border-b border-border/60 bg-background/80 backdrop-blur sticky top-0 z-10">
-        <div className="container max-w-4xl flex items-center justify-between py-4">
-          <div className="flex items-center gap-3">
+        <div className="container max-w-4xl flex items-center justify-between py-4 gap-4">
+          <a href="#home" className="flex items-center gap-3 shrink-0">
             <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-primary to-primary-glow grid place-items-center shadow-[var(--shadow-elegant)]">
               <BookOpen className="h-5 w-5 text-primary-foreground" />
             </div>
@@ -150,20 +167,26 @@ const Index = () => {
               <h1 className="text-lg font-bold leading-tight">Homework Helper</h1>
               <p className="text-xs text-muted-foreground">اردو میں جوابات</p>
             </div>
-          </div>
-          <div className="hidden sm:flex items-center gap-1 text-xs text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5 text-primary" /> AI powered
-          </div>
+          </a>
+          <nav className="hidden md:flex items-center gap-5 text-sm font-medium">
+            <a href="#home" className="text-foreground/70 hover:text-primary transition-colors">Home</a>
+            <a href="#about" className="text-foreground/70 hover:text-primary transition-colors">About</a>
+            <a href="#faq" className="text-foreground/70 hover:text-primary transition-colors">FAQ</a>
+            <a href="#contact" className="text-foreground/70 hover:text-primary transition-colors">Contact</a>
+          </nav>
         </div>
       </header>
 
       <main className="container max-w-4xl py-8 space-y-6">
-        <section className="text-center space-y-2 py-4">
+        <section id="home" className="text-center space-y-2 py-4 scroll-mt-20">
+          <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground bg-accent/60 rounded-full px-3 py-1 mb-2">
+            <Sparkles className="h-3.5 w-3.5 text-primary" /> AI powered learning
+          </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
             Snap. Solve. <span className="text-primary">Learn.</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Upload a photo, paste an image, or type a question — get a step-by-step solution in Urdu.
+            Upload a photo, paste an image, or type a question — get a step-by-step solution in Urdu or English.
           </p>
         </section>
 
