@@ -173,6 +173,7 @@ const Index = () => {
             <a href="#about" className="text-foreground/70 hover:text-primary transition-colors">About</a>
             <a href="#faq" className="text-foreground/70 hover:text-primary transition-colors">FAQ</a>
             <a href="#contact" className="text-foreground/70 hover:text-primary transition-colors">Contact</a>
+            <a href="#privacy" className="text-foreground/70 hover:text-primary transition-colors">Privacy</a>
           </nav>
         </div>
       </header>
@@ -488,6 +489,67 @@ const Index = () => {
                 <Send className="h-4 w-4 mr-2" /> Send message
               </Button>
             </form>
+          </Card>
+        </section>
+
+        {/* Privacy Policy */}
+        <section id="privacy" className="scroll-mt-20">
+          <Card className="p-6 sm:p-8 shadow-[var(--shadow-card)] border-border/60">
+            <div className="flex items-center gap-2 mb-3">
+              <ShieldCheck className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">Privacy Policy</h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4">Last updated: May 4, 2026</p>
+
+            <div className="space-y-5 text-foreground/80 leading-relaxed">
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">What we collect</h3>
+                <p>
+                  Only the question content you share — text you type and images you upload, paste,
+                  or capture — along with your chosen subject and answer language. We do not require
+                  an account and do not collect your name, email, phone number, or location.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">How we use it</h3>
+                <p>
+                  Your question is sent to a trusted AI provider solely to generate the solution and
+                  return it to you. We do not use your content to train AI models, and we never sell
+                  your data.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">Data retention</h3>
+                <p>
+                  Questions and images are processed in real time and are not stored permanently on
+                  our servers. Minimal logs are kept only for reliability and abuse prevention.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">Children's privacy</h3>
+                <p>
+                  Our service is intended for students. We do not knowingly collect personal
+                  information from children.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">Security</h3>
+                <p>
+                  All data is transmitted over HTTPS. While we take reasonable steps to protect your
+                  information, no internet service can guarantee absolute security.
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <Link to="/privacy" className="text-primary hover:underline text-sm font-medium">
+                  Read the full Privacy Policy →
+                </Link>
+              </div>
+            </div>
           </Card>
         </section>
       </main>
