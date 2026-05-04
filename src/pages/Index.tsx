@@ -6,13 +6,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-type Subject = "Math" | "Science" | "English";
+type Subject = "Math" | "Science" | "English" | "Urdu" | "General Knowledge";
 type Language = "Urdu" | "English";
 
 const SUBJECTS: { id: Subject; label: string; urdu: string }[] = [
   { id: "Math", label: "Math", urdu: "ریاضی" },
   { id: "Science", label: "Science", urdu: "سائنس" },
   { id: "English", label: "English", urdu: "انگریزی" },
+  { id: "Urdu", label: "Urdu", urdu: "اردو" },
+  { id: "General Knowledge", label: "General", urdu: "عمومی معلومات" },
 ];
 
 const Index = () => {
