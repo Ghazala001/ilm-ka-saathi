@@ -166,7 +166,7 @@ const Index = () => {
 
         <Card className="p-5 sm:p-6 shadow-[var(--shadow-card)] border-border/60">
           <label className="text-sm font-semibold mb-3 block">Choose subject</label>
-          <div className="grid grid-cols-3 gap-2 mb-6">
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-6">
             {SUBJECTS.map((s) => (
               <button
                 key={s.id}
