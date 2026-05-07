@@ -433,6 +433,11 @@ const Index = () => {
           </Card>
         </section>
 
+        {/* Ad */}
+        <div className="flex justify-center my-2">
+          <div id="container-da8336c7d191e51bfdd7468e7be07969" />
+        </div>
+
         {/* Contact */}
         <section id="contact" className="scroll-mt-20">
           <Card className="p-6 sm:p-8 shadow-[var(--shadow-card)] border-border/60">
