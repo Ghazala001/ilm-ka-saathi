@@ -184,12 +184,13 @@ const Index = () => {
           <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground bg-accent/60 rounded-full px-3 py-1 mb-2">
             <Sparkles className="h-3.5 w-3.5 text-primary" /> AI powered learning
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Snap. Solve. <span className="text-primary">Learn.</span>
-          </h2>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            Free AI Homework Helper in <span className="text-primary">Urdu &amp; English</span>
+          </h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Upload a photo, paste an image, or type a question — get a step-by-step solution in Urdu or English.
+            Upload a photo, paste an image, or type a question — get step-by-step solutions for Math, Science, English, Urdu and General Knowledge in Urdu or English.
           </p>
+
         </section>
 
         <Card className="p-5 sm:p-6 shadow-[var(--shadow-card)] border-border/60">
