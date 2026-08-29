@@ -164,9 +164,10 @@ const Index = () => {
               <BookOpen className="h-5 w-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-lg font-bold leading-tight">Homework Helper</h1>
+              <span className="text-lg font-bold leading-tight block">Ilm Ka Saathi</span>
               <p className="text-xs text-muted-foreground">اردو میں جوابات</p>
             </div>
+
           </a>
           <nav className="hidden md:flex items-center gap-5 text-sm font-medium">
             <a href="#home" className="text-foreground/70 hover:text-primary transition-colors">Home</a>
