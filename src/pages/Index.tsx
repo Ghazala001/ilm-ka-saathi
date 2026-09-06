@@ -171,10 +171,10 @@ const Index = () => {
           </a>
           <nav className="hidden md:flex items-center gap-5 text-sm font-medium">
             <a href="#home" className="text-foreground/70 hover:text-primary transition-colors">Home</a>
-            <a href="#about" className="text-foreground/70 hover:text-primary transition-colors">About</a>
-            <a href="#faq" className="text-foreground/70 hover:text-primary transition-colors">FAQ</a>
-            <a href="#contact" className="text-foreground/70 hover:text-primary transition-colors">Contact</a>
-            <a href="#privacy" className="text-foreground/70 hover:text-primary transition-colors">Privacy</a>
+            <Link to="/about" className="text-foreground/70 hover:text-primary transition-colors">About</Link>
+            <Link to="/faq" className="text-foreground/70 hover:text-primary transition-colors">FAQ</Link>
+            <Link to="/contact" className="text-foreground/70 hover:text-primary transition-colors">Contact</Link>
+            <Link to="/privacy" className="text-foreground/70 hover:text-primary transition-colors">Privacy</Link>
           </nav>
         </div>
       </header>
@@ -566,9 +566,9 @@ const Index = () => {
           <p>© {new Date().getFullYear()} Homework Helper. Built for students.</p>
           <nav className="flex items-center gap-5">
             <a href="#home" className="hover:text-primary inline-flex items-center gap-1"><Home className="h-3.5 w-3.5" /> Home</a>
-            <a href="#about" className="hover:text-primary">About</a>
-            <a href="#faq" className="hover:text-primary">FAQ</a>
-            <a href="#contact" className="hover:text-primary">Contact</a>
+            <Link to="/about" className="hover:text-primary">About</Link>
+            <Link to="/faq" className="hover:text-primary">FAQ</Link>
+            <Link to="/contact" className="hover:text-primary">Contact</Link>
             <Link to="/privacy" className="hover:text-primary">Privacy</Link>
           </nav>
         </div>
